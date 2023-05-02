@@ -1,0 +1,100 @@
+
+name: GitHub-Pipeline 👩‍💻
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      Solution_Name: WebApplication2.sln                          # Replace with your solution name, i.e. MyWpfApp.sln.
+#       Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Wap_Project_Directory: WebApplication2     # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
+      Wap_Project_Path: WebApplication2\WebApplication2.csproj                  # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+
+    steps:
+    - name: Checkout 🔗
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Framework ☸
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe 🏗
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    # Execute all unit tests in the solution
+#     - name: Execute unit tests
+#       run: dotnet test
+
+# ___________________________________________________________________________________________________________
+    - name: Setup NuGet.exe for use with actions
+      # uses: NuGet/setup-nuget@296fd3ccf8528660c91106efefe2364482f86d6f
+      uses: NuGet/setup-nuget@v1.2.0
+      with:
+        # NuGet version to install. Can be `latest`, `preview`, a concrete version like `5.3.1`, or a semver range specifier like `5.x`.
+        nuget-version: # optional, default is latest
+        # NuGet API Key to configure.
+        # nuget-api-key: # optional
+        # Source to scope the NuGet API Key to.
+        # nuget-api-key-source: # optional
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore NuGet Packages
+      run: nuget restore WebApplication2.sln
+
+    - name: Build the application 📢
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    - name: Build the Solution 
+      run: 
+# ___________________________________________________________________________________________________________
+
+    # ------------------------------------------------------------------------------------------------------
+      
+      # Decode the base 64 encoded pfx and save the Signing_Certificate
+    - name: Decode the pfx 📜
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
+        $certificatePath = Join-Path -Path $env:Wap_Project_Directory -ChildPath GitHubActionsWorkflow.pfx
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    # Create the app package by building and packaging the Windows Application Packaging project
+    - name: Create the app package ☁
+      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      env:
+        Appx_Bundle: Always
+        Appx_Bundle_Platforms: x86|x64
+        Appx_Package_Build_Mode: StoreUpload
+        Configuration: ${{ matrix.configuration }}
+
+    # Remove the pfx
+    - name: Remove the pfx 🕵️‍♀️
+      run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
+
+    # # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
+    # - name: Upload build artifacts 📍
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: MSIX Package
+    #     path: ${{ env.Wap_Project_Directory }}\AppPackages
+
