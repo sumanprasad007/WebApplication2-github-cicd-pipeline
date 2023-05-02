@@ -65,6 +65,8 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Publishing the application
+      run: nuget publish webApplication2.sln
 
 # ___________________________________________________________________________________________________________
 
