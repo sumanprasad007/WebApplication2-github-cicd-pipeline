@@ -48,9 +48,9 @@ jobs:
     - name: Setup NuGet.exe for use with actions
       # uses: NuGet/setup-nuget@296fd3ccf8528660c91106efefe2364482f86d6f
       uses: NuGet/setup-nuget@v1.2.0
-      with:
+#        with:
         # NuGet version to install. Can be `latest`, `preview`, a concrete version like `5.3.1`, or a semver range specifier like `5.x`.
-        nuget-version: # optional, default is latest
+#       nuget-version: # optional, default is latest
         # NuGet API Key to configure.
         # nuget-api-key: # optional
         # Source to scope the NuGet API Key to.
@@ -65,8 +65,7 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Build the Solution 
-      run: 
+
 # ___________________________________________________________________________________________________________
 
     # ------------------------------------------------------------------------------------------------------
