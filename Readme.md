@@ -43,3 +43,4 @@ Replace the variables relative to your project in the "env" section below.
  refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
 
+# WebApplication2-github-cicd-pipeline
