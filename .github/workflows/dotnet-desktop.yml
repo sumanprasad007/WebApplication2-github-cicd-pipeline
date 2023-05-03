@@ -65,15 +65,15 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Publish the application
-      run: msbuild $env:Solution_Name /t:Publish /p:Configuration=$env:Configuration /p:OutputPath=bin\publish
+#     - name: Publish the application
+#       run: msbuild $env:Solution_Name /t:Publish /p:Configuration=$env:Configuration /p:OutputPath=bin\publish
   
-    - name: Publish artifacts
-      uses: actions/upload-artifact@v2
-      with:
-          name: Published Code
-          path: bin\publish
-# ___________________________________________________________________________________________________________
+#     - name: Publish artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#           name: Published Code
+#           path: bin\publish
+# # ___________________________________________________________________________________________________________
 
     # ------------------------------------------------------------------------------------------------------
       
