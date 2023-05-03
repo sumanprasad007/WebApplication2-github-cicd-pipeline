@@ -73,11 +73,9 @@ jobs:
     - name: Publish the application
       # run: msbuild $env:Solution_Name /t:Publish /p:Configuration=$env:Configuration /p:OutputPath=bin\publish
       # run: msbuild $env:Solution_Name /t:Publish  /p:OutputPath=WebApplication2-github-cicd-pipeline/WebApplication2/bin/
-      run: msbuild $env:Solution_Name /t:Publish /p:OutputPath=$env:Publish_Directory
-
-    - name: Setting Working Directory
-      run:
-      working-directory: frontend
+      run:  |
+        working-directory: frontend
+        msbuild $env:Solution_Name /t:Publish /p:OutputPath=$env:Publish_Directory
 
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
