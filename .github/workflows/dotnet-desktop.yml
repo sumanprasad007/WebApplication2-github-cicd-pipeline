@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+defaults:
+  run:
+    working-directory: frontend
+    
 jobs:
 
   build:
@@ -67,14 +71,14 @@ jobs:
 
     - name: Publish the application
       # run: msbuild $env:Solution_Name /t:Publish /p:Configuration=$env:Configuration /p:OutputPath=bin\publish
-#       run: msbuild $env:Solution_Name /t:Publish  /p:OutputPath=/WebApplication2/bin/
-      run: msbuild $env:Solution_Name /t:Publish /p:Configuration=Debug /p:Platform=AnyCPU /p:PublishDir=bin\publish
-      
+      # run: msbuild $env:Solution_Name /t:Publish  /p:OutputPath=WebApplication2-github-cicd-pipeline/WebApplication2/bin/
+      run: msbuild $env:Solution_Name /t:Publish  /p:OutputPath=frontend/build
+  
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
           name: Published Code
-          path: /bin/publish
+          path: frontend/build
 # # ___________________________________________________________________________________________________________
 
     # ------------------------------------------------------------------------------------------------------
