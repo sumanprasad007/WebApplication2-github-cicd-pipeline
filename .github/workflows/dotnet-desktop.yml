@@ -27,7 +27,7 @@ jobs:
 #       Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
       Wap_Project_Directory: WebApplication2     # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
       Wap_Project_Path: WebApplication2\WebApplication2.csproj                  # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
-      Publish_Directory: publish
+      Publish_Directory: ${{ github.workspace }}/publish
 
     steps:
     - name: Checkout 🔗
@@ -74,7 +74,7 @@ jobs:
       # run: msbuild $env:Solution_Name /t:Publish /p:Configuration=$env:Configuration /p:OutputPath=bin\publish
       # run: msbuild $env:Solution_Name /t:Publish  /p:OutputPath=WebApplication2-github-cicd-pipeline/WebApplication2/bin/
       run:  |
-        working-directory: frontend
+        # working-directory: frontend
         msbuild $env:Solution_Name /t:Publish /p:OutputPath=$env:Publish_Directory
 
     - name: Publish artifacts
