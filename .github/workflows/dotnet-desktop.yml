@@ -67,13 +67,13 @@ jobs:
 
     - name: Publish the application
       # run: msbuild $env:Solution_Name /t:Publish /p:Configuration=$env:Configuration /p:OutputPath=bin\publish
-      run: msbuild $env:Solution_Name /t:Publish  /p:OutputPath=bin\publish
+      run: msbuild $env:Solution_Name /t:Publish  /p:OutputPath=WebApplication2-github-cicd-pipeline/WebApplication2/bin/
   
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
           name: Published Code
-          path: bin\publish
+          path: WebApplication2-github-cicd-pipeline/WebApplication2/bin/
 # # ___________________________________________________________________________________________________________
 
     # ------------------------------------------------------------------------------------------------------
