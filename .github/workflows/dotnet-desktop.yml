@@ -30,7 +30,7 @@ jobs:
       # Publish_Directory: ${{ github.workspace }}/publish
       # Publish_Directory: ${{ github.workspace }}/WebApplication2-github-cicd-pipeline/publish
       # Publish_Directory: ${{ github.repository }}/publish
-      Publish_Directory: WebApplication2-github-cicd-pipeline/WebApplication2/bin/publish
+      Publish_Directory: build
 
     steps:
     - name: Checkout 🔗
