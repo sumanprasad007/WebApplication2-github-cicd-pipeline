@@ -64,7 +64,7 @@ jobs:
         # nuget-api-key-source: # optional
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore NuGet Packages
+    - name: Restore NuGet Packages 📚
       run: nuget restore WebApplication2.sln
 
     - name: Build the application 📢
