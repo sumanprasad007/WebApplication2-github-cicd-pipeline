@@ -29,7 +29,8 @@ jobs:
       Wap_Project_Path: WebApplication2\WebApplication2.csproj                  # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
       # Publish_Directory: ${{ github.workspace }}/publish
       # Publish_Directory: ${{ github.workspace }}/WebApplication2-github-cicd-pipeline/publish
-      Publish_Directory: https://github.com/${{ github.repository }}/publish
+      # Publish_Directory: ${{ github.repository }}/publish
+      Publish_Directory: WebApplication2-github-cicd-pipeline/WebApplication2/bin/publish
 
     steps:
     - name: Checkout 🔗
@@ -52,7 +53,7 @@ jobs:
 #       run: dotnet test
 
 # ___________________________________________________________________________________________________________
-    - name: Setup NuGet.exe for use with actions
+    - name: Setup NuGet.exe for use with actions 
       # uses: NuGet/setup-nuget@296fd3ccf8528660c91106efefe2364482f86d6f
       uses: NuGet/setup-nuget@v1.2.0
 #        with:
